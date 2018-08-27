@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "boom": "^7.2.0",
+    "good": "^8.1.1",
+    "good-console": "^7.1.0",
     "hapi": "^17.5.3"
   }
 }
