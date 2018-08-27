@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "description": "Organization test REST API",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node lib/index.js",
+    "eslint": "eslint --ignore-path .gitignore lib",
+    "precommit": "npm run eslint"
+  },
   "author": "Sergey Volkov <sergey.volkov@agileengine.com>",
   "license": "ISC",
   "engines": {
@@ -11,7 +15,8 @@
   },
   "devDependencies": {
     "eslint": "^5.4.0",
-    "eslint-plugin-node": "^7.0.1"
+    "eslint-plugin-node": "^7.0.1",
+    "husky": "^0.14.3"
   },
   "dependencies": {
     "boom": "^7.2.0",
