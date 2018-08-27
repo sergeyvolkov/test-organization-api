@@ -1,0 +1,9 @@
+{
+  "name": "organization-test-api",
+  "version": "0.0.1",
+  "description": "Organization test REST API",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Sergey Volkov <sergey.volkov@agileengine.com>",
+  "license": "ISC"
+}
