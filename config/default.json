@@ -1,0 +1,14 @@
+{
+  "db": {
+    "postgres": {
+      "host": "localhost",
+      "port": "5432",
+      "user": "local",
+      "password": "local",
+      "database": "local"
+    }
+  },
+  "swagger": {
+    "enabled": "1"
+  }
+}
