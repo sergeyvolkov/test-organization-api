@@ -26,6 +26,9 @@
     "hapi-swagger": "^9.1.1",
     "inert": "^5.1.0",
     "joi": "^13.6.0",
+    "knex": "^0.15.2",
+    "objection": "^1.2.3",
+    "schwifty": "^4.0.0",
     "vision": "^5.4.0"
   }
 }
