@@ -7,6 +7,8 @@ For local environment:
 
 With Docker:
  - run `npm run start:docker`
+ 
+Or use Heroku: [https://organization-test-api.herokuapp.com](https://organization-test-api.herokuapp.com)
 
 **Use any credentials for sign-in**
 
