@@ -10,5 +10,10 @@
   },
   "swagger": {
     "enabled": "1"
+  },
+  "jwt": {
+    "publicKey": "JWT_PUBLIC_KEY",
+    "refreshKey": "JWT_REFRESH_KEY",
+    "secretKey": "JWT_SECRET_KEY"
   }
 }

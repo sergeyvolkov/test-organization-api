@@ -11,5 +11,10 @@
   },
   "swagger": {
     "enabled": "SWAGGER_ENABLED"
+  },
+  "jwt": {
+    "publicKey": "YOUR RSA PUBLIC KEY HERE",
+    "refreshKey": "YOUR REFRESH KEY HERE",
+    "secretKey": "YOUR RSA PRIVATE KEY HERE"
   }
 }

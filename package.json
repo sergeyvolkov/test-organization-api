@@ -26,13 +26,17 @@
     "good": "^8.1.1",
     "good-console": "^7.1.0",
     "hapi": "^17.5.3",
+    "hapi-auth-jwt2": "^8.1.0",
     "hapi-swagger": "^9.1.1",
+    "hoek": "^5.0.4",
     "inert": "^5.1.0",
     "joi": "^13.6.0",
+    "jsonwebtoken": "^8.3.0",
     "knex": "^0.15.2",
     "objection": "^1.2.3",
     "pg": "^7.4.3",
     "schwifty": "^4.0.0",
+    "uuid62": "^1.0.0",
     "vision": "^5.4.0"
   }
 }
