@@ -20,14 +20,16 @@ services:
       dockerfile: Dockerfile
     restart: always
     depends_on:
-    - api_postgres
+      - api_postgres
+    ports:
+      - "8080:80"
     environment:
-      PORT: 3000
-      DB_HOST: api_postgres
-      DB_PORT: 5432
-      DB_NAME: local
-      DB_USER: local
-      DB_PASSWORD: local
+      PORT: 80
+      POSTGRES_HOST: api_postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_NAME: local
+      POSTGRES_USER: local
+      POSTGRES_PASSWORD: local
 
 volumes:
   pg_data:

@@ -12,8 +12,8 @@
     "enabled": "1"
   },
   "jwt": {
-    "publicKey": "JWT_PUBLIC_KEY",
-    "refreshKey": "JWT_REFRESH_KEY",
-    "secretKey": "JWT_SECRET_KEY"
+    "publicKey": "YOUR RSA PUBLIC KEY HERE",
+    "refreshKey": "YOUR REFRESH KEY HERE",
+    "secretKey": "YOUR RSA PRIVATE KEY HERE"
   }
 }
