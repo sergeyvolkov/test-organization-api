@@ -13,34 +13,29 @@ const {
   it,
 } = module.exports.lab = Lab.script();
 
+const {
+  requests: {
+    listing: listingRequest,
+  },
+  credentials,
+} = require('./../helpers/requests');
+
 describe('Listing organization API', () => {
   let server;
-
-  const defaultCredentials = {
-    id: 1,
-  };
-
-  const listingOrganizationRequest = async (options) => {
-    return await server.inject({
-      url: '/organization',
-      method: 'GET',
-      ...options,
-    });
-  };
 
   before(async () => {
     server = await Server.compose();
   });
 
   it('should fails without token', async () => {
-    const response = await listingOrganizationRequest();
+    const response = await listingRequest(server);
     expect(response.statusCode).to.be.equal(401);
     expect(response.result.error).to.be.equal('Unauthorized');
   });
 
   it('should successfully returns listing', async () => {
-    const response = await listingOrganizationRequest({
-      credentials: defaultCredentials,
+    const response = await listingRequest(server, {
+      credentials,
     });
     expect(response.statusCode).to.be.equal(200);
     expect(response.result).to.be.an.object().and.include(['items']);

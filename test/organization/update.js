@@ -13,93 +13,80 @@ const {
   it,
 } = module.exports.lab = Lab.script();
 
+const {
+  requests: {
+    create: createRequest,
+    delete: deleteRequest,
+    details: detailsRequest,
+    update: updateRequest,
+  },
+  payload: {
+    create: createPayload,
+    updateRequired: updateRequiredPayload,
+    update: updatePayload,
+  },
+  credentials,
+  randomOrganizationId,
+} = require('./../helpers/requests');
+
 describe('Update organization API', () => {
   let server;
-
-  const defaultPayload = {
-    name: 'test-name',
-    description: 'test-description',
-    url: 'test-url',
-    code: 'test-code',
-    type: 'employer',
-  };
-  const defaultCredentials = {
-    id: 1,
-  };
-
-  const randomOrganizationId = 42;
-
-  const createOrganizationRequest = async (options) => {
-    return await server.inject({
-      url: '/organization',
-      method: 'POST',
-      ...options,
-    });
-  };
-
-  const deleteOrganizationRequest = async (id, options) => {
-    return await server.inject({
-      url: `/organization/${id}`,
-      method: 'DELETE',
-      ...options,
-    });
-  };
-
-  const updateOrganizationRequest = async (id, options) => {
-    return await server.inject({
-      url: `/organization/${id}`,
-      method: 'PUT',
-      ...options,
-    });
-  };
 
   before(async () => {
     server = await Server.compose();
   });
 
   it('should fails without token', async () => {
-    const response = await updateOrganizationRequest(randomOrganizationId, {
-      payload: {
-        name: 'updated-name',
-      },
+    const response = await updateRequest(server, randomOrganizationId, {
+      payload: updateRequiredPayload,
     });
     expect(response.statusCode).to.be.equal(401);
     expect(response.result.error).to.be.equal('Unauthorized');
   });
 
   it('should successfully update an organization', async () => {
-    const payload = Object.assign({}, defaultPayload);
-
-    const createResponse = await createOrganizationRequest({ payload, credentials: defaultCredentials });
-    expect(createResponse.statusCode).to.equal(201);
-    expect(createResponse.result.id).to.be.a.number();
-
-    const updateResponse = await updateOrganizationRequest(createResponse.result.id, {
-      payload: {
-        name: 'updated-name',
-      },
-      credentials: defaultCredentials,
+    const createResponse = await createRequest(server, {
+      payload: createPayload,
+      credentials,
     });
+    const organizationId = createResponse.result.id;
+
+    expect(createResponse.statusCode).to.equal(201);
+    expect(organizationId).to.be.a.number();
+
+    const updateResponse = await updateRequest(server, organizationId, {
+      payload: updatePayload,
+      credentials,
+    });
+
     expect(updateResponse.statusCode).to.be.equal(204);
     expect(updateResponse.result).to.be.a.null();
+
+    const detailsResponse = await detailsRequest(server, organizationId, {
+      credentials,
+    });
+    expect(detailsResponse.result.name).to.be.equal(updatePayload.name);
+    expect(detailsResponse.result.description).to.be.equal(updatePayload.description);
+    expect(detailsResponse.result.url).to.be.equal(updatePayload.url);
+    expect(detailsResponse.result.code).to.be.equal(updatePayload.code);
+    expect(detailsResponse.result.type).to.be.equal(updatePayload.type);
   });
 
   it('should returns an error for non-existent organization', async () => {
-    const createResponse = await createOrganizationRequest({
-      payload: {
-        name: 'test-organization',
-      },
-      credentials: defaultCredentials,
+    const createResponse = await createRequest(server, {
+      payload: createPayload,
+      credentials,
     });
 
-    await deleteOrganizationRequest(createResponse.result.id, {
-      credentials: defaultCredentials,
+    await deleteRequest(server, createResponse.result.id, {
+      credentials,
     });
 
-    const failureResponse = await deleteOrganizationRequest(createResponse.result.id, {
-      credentials: defaultCredentials,
+    const updateResponse = await updateRequest(server, createResponse.result.id, {
+      payload: updatePayload,
+      credentials,
     });
-    expect(failureResponse.statusCode).to.be.equal(404);
+    expect(updateResponse.statusCode).to.be.equal(404);
   });
 
   after(async () => {

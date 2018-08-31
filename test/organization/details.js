@@ -13,90 +13,64 @@ const {
   it,
 } = module.exports.lab = Lab.script();
 
+const {
+  requests: {
+    create: createRequest,
+    delete: deleteRequest,
+    details: detailsRequest,
+  },
+  payload: {
+    create: createPayload,
+    createRequired: createRequiredPayload,
+  },
+  credentials,
+  randomOrganizationId,
+} = require('./../helpers/requests');
+
 describe('Details organization API', () => {
   let server;
-
-  const randomOrganizationId = 42;
-
-  const defaultCredentials = {
-    id: 1,
-  };
-
-  const createOrganizationRequest = async (options) => {
-    return await server.inject({
-      url: '/organization',
-      method: 'POST',
-      ...options,
-    });
-  };
-
-  const detailsOrganizationRequest = async (id, options) => {
-    return await server.inject({
-      url: `/organization/${id}`,
-      method: 'GET',
-      ...options,
-    });
-  };
-
-  const deleteOrganizationRequest = async (id, options) => {
-    return await server.inject({
-      url: `/organization/${id}`,
-      method: 'DELETE',
-      ...options,
-    });
-  };
 
   before(async () => {
     server = await Server.compose();
   });
 
   it('should fails without token', async () => {
-    const response = await detailsOrganizationRequest(randomOrganizationId);
+    const response = await detailsRequest(server, randomOrganizationId);
     expect(response.statusCode).to.be.equal(401);
     expect(response.result.error).to.be.equal('Unauthorized');
   });
 
   it('should successfully returns details', async () => {
-    const defaultCreatePayload = {
-      name: 'organization-1',
-      description: 'description-1',
-      url: 'url-1',
-      code: 'code-1',
-      type: 'employer',
-    };
-
-    const createResponse = await createOrganizationRequest({
-      payload: defaultCreatePayload,
-      credentials: defaultCredentials,
+    const createResponse = await createRequest(server, {
+      payload: createPayload,
+      credentials,
     });
 
-    const response = await detailsOrganizationRequest(createResponse.result.id, {
-      credentials: defaultCredentials,
+    const response = await detailsRequest(server, createResponse.result.id, {
+      credentials,
     });
     expect(response.statusCode).to.be.equal(200);
     expect(response.result).to.be.an.object().and.include(['id', 'name', 'description', 'url', 'code', 'type']);
 
-    expect(response.result.name).to.be.equal(defaultCreatePayload.name);
-    expect(response.result.description).to.be.equal(defaultCreatePayload.description);
-    expect(response.result.url).to.be.equal(defaultCreatePayload.url);
-    expect(response.result.code).to.be.equal(defaultCreatePayload.code);
-    expect(response.result.type).to.be.equal(defaultCreatePayload.type);
+    expect(response.result.name).to.be.equal(createPayload.name);
+    expect(response.result.description).to.be.equal(createPayload.description);
+    expect(response.result.url).to.be.equal(createPayload.url);
+    expect(response.result.code).to.be.equal(createPayload.code);
+    expect(response.result.type).to.be.equal(createPayload.type);
   });
 
   it('should returns an error for non-existent organization', async () => {
-    const createResponse = await createOrganizationRequest({
-      payload: {
-        name: 'test-organization',
-      },
-      credentials: defaultCredentials,
+    const createResponse = await createRequest(server, {
+      payload: createRequiredPayload,
+      credentials,
     });
 
-    await deleteOrganizationRequest(createResponse.result.id, {
-      credentials: defaultCredentials,
+    await deleteRequest(server, createResponse.result.id, {
+      credentials,
     });
 
-    const failureResponse = await detailsOrganizationRequest(createResponse.result.id, {
-      credentials: defaultCredentials,
+    const failureResponse = await detailsRequest(server, createResponse.result.id, {
+      credentials,
     });
     expect(failureResponse.statusCode).to.be.equal(404);
   });
