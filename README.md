@@ -36,6 +36,12 @@ Next routes are available now:
  - `JWT_REFRESH_KEY`
  - `JWT_SECRET_KEY`
 
+### Testing
+Use `npm t` for run tests. Also, you need to set next environment variables (feel free to edit `./config/test.json`):
+ - `JWT_PUBLIC_KEY`
+ - `JWT_REFRESH_KEY`
+ - `JWT_SECRET_KEY`
+
 ### API Documentation
 Set `SWAGGER_ENABLED` flag to use Swagger UI documentation with `/documentation` URI.
 

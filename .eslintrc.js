@@ -21,4 +21,11 @@ module.exports = {
     strict: ['error', 'global'],
     quotes: ['error', 'single'],
   },
+  overrides: [{
+    files: 'test/**/*.js',
+    rules: {
+      'node/no-unpublished-require': 0,
+      'node/no-missing-require': 0,
+    },
+  }],
 };
